@@ -1,5 +1,5 @@
 # 16-Project-2
-LINK
+https://github.com/thejihongjin/16-Project-2/
 
 ### Requirements
 Your project must:
