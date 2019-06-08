@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "root",
-    "database": "exampledb",
+    "database": "bookshelf_db",
     "host": "localhost",
     "dialect": "mysql"
   },
