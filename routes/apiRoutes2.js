@@ -57,15 +57,15 @@ router.post('/api/new/book', function (req, res) {
         if (!err && JSON.parse(body).Response !== 'False') {
             console.log(JSON.parse(body));
 
-            var isBin = JSON.parse(body).isBin;
+            var Review = JSON.parse(body).Review;
 
-            console.log(isBin);
+            console.log(Review);
 
             var books = "";
 
             var options = {
                 method: 'GET',
-                url: 'https://www.goodreads.com/book/isbn/ISBN?format=FORMAT' + iSBin + '/books',
+                url: 'https://www.goodreads.com/book/show.FORMAT' + review + '/books',
                 qs: {
                     language: 'en-US',
                     api_key: 'MjT6HauT5w0anBEF18C4NA'
@@ -94,7 +94,7 @@ router.post('/api/new/book', function (req, res) {
                         book_plot: JSON.parse(body).Plot,
                         book_author: JSON.parse(body).Director,
                         book_year: JSON.parse(body).Year,
-                        book_ratingisBin: JSON.parse(body).Ratings[0].Value,
+                        book_ratingReview: JSON.parse(body).Ratings[0].Value,
 
 
                     }).then(function () {
