@@ -1,99 +1,154 @@
+$.ajaxPrefilter(function (options) {
+    if (options.crossDomain && jQuery.support.cors) {
+        options.url = "https://cors-anywhere.herokuapp.com/" + options.url;
+    }
+});
+
 // Get references to page elements
-var $exampleText = $("#example-text");
-var $exampleDescription = $("#example-description");
+var $bookTitle = $("#book-title");
+var $bookDescription = $("#book-description");
 var $submitBtn = $("#submit");
-var $exampleList = $("#example-list");
+var $bookList = $("#book-list");
 
 // The API object contains methods for each kind of request we'll make
 var API = {
-  saveExample: function(example) {
-    return $.ajax({
-      headers: {
-        "Content-Type": "application/json"
-      },
-      type: "POST",
-      url: "api/examples",
-      data: JSON.stringify(example)
-    });
-  },
-  getExamples: function() {
-    return $.ajax({
-      url: "api/examples",
-      type: "GET"
-    });
-  },
-  deleteExample: function(id) {
-    return $.ajax({
-      url: "api/examples/" + id,
-      type: "DELETE"
-    });
-  }
+    saveBook: function (book) {
+        // move goodreads api call here
+
+        // return $.ajax({
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     },
+        //     type: "POST",
+        //     url: "api/books",
+        //     data: JSON.stringify(book)
+        // });
+    },
+    getBooks: function () {
+        return $.ajax({
+            url: "api/books",
+            type: "GET"
+        });
+    },
+    deleteBook: function (id) {
+        return $.ajax({
+            url: "api/books/" + id,
+            type: "DELETE"
+        });
+    }
 };
 
-// refreshExamples gets new examples from the db and repopulates the list
-var refreshExamples = function() {
-  API.getExamples().then(function(data) {
-    var $examples = data.map(function(example) {
-      var $a = $("<a>")
-        .text(example.text)
-        .attr("href", "/example/" + example.id);
+// refreshBooks gets new books from the db and repopulates the list
+var refreshBooks = function () {
+    API.getBooks().then(function (data) {
+        var $books = data.map(function (book) {
+            var $a = $("<a>")
+                .text(book.title)
+                .attr("href", "/book/" + book.id);
 
-      var $li = $("<li>")
-        .attr({
-          class: "list-group-item",
-          "data-id": example.id
-        })
-        .append($a);
+            var $li = $("<li>")
+                .attr({
+                    class: "list-group-item",
+                    "data-id": book.id
+                })
+                .append($a);
 
-      var $button = $("<button>")
-        .addClass("btn btn-danger float-right delete")
-        .text("ｘ");
+            var $button = $("<button>")
+                .addClass("btn btn-danger float-right delete")
+                .text("ｘ");
 
-      $li.append($button);
+            $li.append($button);
 
-      return $li;
+            return $li;
+        });
+
+        $bookList.empty();
+        $bookList.append($books);
+    });
+};
+
+// handleFormSubmit is called whenever we submit a new book
+// Save the new book to the db and refresh the list
+var handleFormSubmit = function (event) {
+    event.preventDefault();
+
+    var book = encodeURIComponent($bookTitle.val().trim());
+    console.log(book);
+
+    if (!book) {
+        alert("You must enter an book title!");
+        return;
+    }
+
+    // API.saveBook(book).then(function () {
+    //     refreshBooks();
+    // });
+
+    var queryUrl = "https://www.goodreads.com/search.xml?key=XTxG7pAsNm9tvSADYVoug&q=" + book;
+    $.ajax({
+        url: queryUrl,
+        method: "GET"
+    }).then(function (response) {
+        var jsonRes = xml2json(response);
+        console.log(jsonRes);
     });
 
-    $exampleList.empty();
-    $exampleList.append($examples);
-  });
+    $bookTitle.val("");
 };
 
-// handleFormSubmit is called whenever we submit a new example
-// Save the new example to the db and refresh the list
-var handleFormSubmit = function(event) {
-  event.preventDefault();
+// handleDeleteBtnClick is called when an book's delete button is clicked
+// Remove the book from the db and refresh the list
+var handleDeleteBtnClick = function () {
+    var idToDelete = $(this)
+        .parent()
+        .attr("data-id");
 
-  var example = {
-    text: $exampleText.val().trim(),
-    description: $exampleDescription.val().trim()
-  };
-
-  if (!(example.text && example.description)) {
-    alert("You must enter an example text and description!");
-    return;
-  }
-
-  API.saveExample(example).then(function() {
-    refreshExamples();
-  });
-
-  $exampleText.val("");
-  $exampleDescription.val("");
-};
-
-// handleDeleteBtnClick is called when an example's delete button is clicked
-// Remove the example from the db and refresh the list
-var handleDeleteBtnClick = function() {
-  var idToDelete = $(this)
-    .parent()
-    .attr("data-id");
-
-  API.deleteExample(idToDelete).then(function() {
-    refreshExamples();
-  });
+    API.deleteBook(idToDelete).then(function () {
+        refreshBooks();
+    });
 };
 
 // Add event listeners to the submit and delete buttons
 $submitBtn.on("click", handleFormSubmit);
-$exampleList.on("click", ".delete", handleDeleteBtnClick);
+$bookList.on("click", ".delete", handleDeleteBtnClick);
+
+
+
+// converts xml to json
+function xml2json(srcDOM) {
+    let children = [...srcDOM.children];
+
+    // base case for recursion. 
+    if (!children.length) {
+        if (srcDOM.hasAttributes()) {
+            var attrs = srcDOM.attributes;
+            var output = {};
+            for (var i = attrs.length - 1; i >= 0; i--) {
+                output[attrs[i].name] = attrs[i].value;
+            }
+            output.value = srcDOM.innerHTML;
+            return output;
+        } else {
+            return srcDOM.innerHTML
+        }
+    }
+
+    // initializing object to be returned. 
+    let jsonResult = {};
+    for (let child of children) {
+        // checking is child has siblings of same name. 
+        let childIsArray = children.filter(eachChild => eachChild.nodeName === child.nodeName).length > 1;
+
+        // if child is array, save the values as array, else as strings. 
+        if (childIsArray) {
+            if (jsonResult[child.nodeName] === undefined) {
+                jsonResult[child.nodeName] = [xml2json(child)];
+            } else {
+                jsonResult[child.nodeName].push(xml2json(child));
+            }
+        } else {
+            jsonResult[child.nodeName] = xml2json(child);
+        }
+    }
+    return jsonResult;
+}
