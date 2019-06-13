@@ -19,14 +19,14 @@ module.exports = function (sequelize, DataTypes) {
                 type: DataTypes.INTEGER(4),
                 allowNull: false
             },
-            genre: {
-                type: DataTypes.STRING(30),
-                allowNull: false
-            },
-            plot: {
-                type: DataTypes.STRING(1000),
-                allowNull: false
-            },
+            // genre: {
+            //     type: DataTypes.STRING(30),
+            //     allowNull: false
+            // },
+            // plot: {
+            //     type: DataTypes.STRING(1000),
+            //     allowNull: false
+            // },
             cover: {
                 type: DataTypes.TEXT,
                 allowNull: false
@@ -43,15 +43,15 @@ module.exports = function (sequelize, DataTypes) {
             createdAt: {
                 type: DataTypes.DATE,
                 allowNull: false,
-                defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
+                defaultValue: sequelize.literal("CURRENT_TIMESTAMP")
             },
             updatedAt: {
                 type: DataTypes.DATE,
                 allowNull: false,
-                defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
+                defaultValue: sequelize.literal("CURRENT_TIMESTAMP")
             }
 
-            
+
         }
     );
 
