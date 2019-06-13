@@ -1,52 +1,43 @@
 var db = require("../models");
+var express = require("express");
+var app = express();
+
 
 module.exports = function(app) {
   // Get all authors
-  app.get("/api/post", function(req, res) {
-    db.Bookshelf.findAll({}).then(function(dbBookshelfs) {
-      res.json(dbBookshelfs);
+  app.get("/api/book", function(req, res) {
+    db.Book.findAll({}).then(function(dbBooks) {
+      res.json(dbBooks);
     });
   });
 
   // Get route for returning authors of a specific category
-  app.get("/api/posts/category/:category", function(req, res) {
-    db.Bookshelf.findAll({
+  app.get("/api/books/category/:category", function(req, res) {
+    db.Book.findAll({
       where: {
         category: req.params.category
       }
     })
-      .then(function(dbBookshelfs) {
-        res.json(dbBookshelfs);
+      .then(function(dbBooks) {
+        res.json(dbBooks);
       });
   });
 
   // Get route for retrieving a single author
-  app.get("/api/posts/:id", function(req, res) {
-    db.Bookshelf.findOne({
+  app.get("/api/book/:id", function(req, res) {
+    db.Book.findOne({
       where: {
         id: req.params.id
       }
     })
-      .then(function(dbBookshelf) {
-        res.json(dbBookshelf);
+      .then(function(dbBook) {
+        res.json(dbBook);
       });
   });
 
-  // POST route for saving a new author
-  app.post("/api/posts", function(req, res) {
-    console.log(req.body);
-    db.Post.create({
-      title: req.body.title,
-      body: req.body.body,
-      category: req.body.category
-    })
-      .then(function(dbPost) {
-        res.json(dbPost);
-      });
-  });
 
    // DELETE route for deleting authors
-   app.delete("/api/posts/:id", function(req, res) {
+   app.delete("/api/book/:id", function(req, res) {
     db.Post.destroy({
       where: {
         id: req.params.id
@@ -58,7 +49,7 @@ module.exports = function(app) {
   });
 
   // PUT route for updating authors
-  app.put("/api/posts", function(req, res) {
+  app.put("/api/book", function(req, res) {
     db.Post.update(req.body,
       {
         where: {
@@ -71,20 +62,11 @@ module.exports = function(app) {
   });
 };
 
-
-
-
-  // Create a new example
-  app.post("/api/post", function(req, res) {
-    db.Bookshelf.create(req.body).then(function(dbBookshelf) {
-      res.json(dbBookshelf);
-    });
-  });
+  
 
   // Delete an example by id
-  app.delete("/api/post/:id", function(req, res) {
-    db.Bookshelf.destroy({ where: { id: req.params.id } }).then(function(dbBookshelf) {
-      res.json(dbBookshelf);
+  app.delete("/api/book/:id", function(req, res) {
+    db.Book.destroy({ where: { id: req.params.id } }).then(function(dbBook) {
+      res.json(dbBook);
     });
   });
-

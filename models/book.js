@@ -1,5 +1,5 @@
-module.exports = function (sequelize, DataTypes) {
-    var Book = sequelize.define("Book",
+module.exports = function (Sequelize, DataTypes) {
+    var Book = Sequelize.define("Book",
         {
             id: {
                 type: DataTypes.INTEGER,
