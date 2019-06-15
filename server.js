@@ -1,9 +1,6 @@
 require("dotenv").config();
 var express = require("express");
 var exphbs = require("express-handlebars");
-var axios = require("axios");
-var convert = require("xml-js");
-
 var db = require("./models");
 
 var app = express();
@@ -24,7 +21,7 @@ app.engine(
 app.set("view engine", "handlebars");
 
 // Routes
-require("./routes/apiRoutes")(app, axios, convert);
+require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
 
 var syncOptions = { force: false };

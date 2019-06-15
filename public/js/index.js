@@ -1,14 +1,14 @@
-// $.ajaxPrefilter(function(options) {
-//     if (options.crossDomain && jQuery.support.cors) {
-//         options.url = "https://cors-anywhere.herokuapp.com/" + options.url;
-//     }
-// });
-
 // Get references to page elements
 var $bookTitle = $("#book-title");
+var $book = $("#myModal");
 var $bookDescription = $("#book-description");
 var $submitBtn = $("#submit");
 var $bookList = $("#book-list");
+
+var resultsList = [];
+var index;
+
+$(".loader").hide();
 
 // The API object contains methods for each kind of request we'll make
 var API = {
@@ -67,12 +67,20 @@ var refreshBooks = function() {
 var handleFormSubmit = function(event) {
     event.preventDefault();
 
+    $("#searchResultList").empty();
+
+    // show loader
+
     var bookTitle = encodeURIComponent($bookTitle.val().trim());
     console.log(bookTitle);
 
     if (!bookTitle) {
         alert("You must enter an book title!");
         return;
+    } else {
+        $(".loader").fadeIn("fast", function() {
+            console.log("Loading");
+        });
     }
 
     // API.saveBook(book).then(function() {
@@ -85,8 +93,14 @@ var handleFormSubmit = function(event) {
         url: queryUrl,
         method: "GET"
     }).then(function(response) {
-        console.log(response);
+        //console.log(response);
+        // loader hide
+        $(".loader").fadeOut(10, function() {
+            console.log("Loaded");
+        });
+
         console.log(queryUrl);
+        appendSearchResults(response.items);
     });
 
     $bookTitle.val("");
@@ -104,47 +118,51 @@ var handleDeleteBtnClick = function() {
     });
 };
 
+var appendSearchResults = function(data) {
+    //console.log(data);
+    for (var i = 0; i < data.length; i++) {
+        var dataInfo = data[i].volumeInfo;
+        //console.log(dataInfo);
+        var info = {
+            id: i,
+            title: dataInfo.title,
+            author: dataInfo.authors.join(", "),
+            year: dataInfo.publishedDate,
+            plot: dataInfo.description,
+            avg_rating: dataInfo.averageRating,
+            cover: dataInfo.imageLinks.thumbnail
+        };
+        resultsList.push(info);
+    }
+
+    for (var i = 0; i <= resultsList.length; i++) {
+        var img = "<img src='" + resultsList[i].cover + "'>";
+        var list =
+			"<li><button data-toggle='modal' type='button' data-target='#exampleModalCenter' class='h' data-index=" +
+			i +
+			">" +
+			img +
+			"</button></li>";
+        $("#searchResultList")
+            .append(list)
+            .children(":last")
+            .hide()
+            .fadeIn(100 + i * 250);
+        console.log(resultsList);
+    }
+};
+$("#searchResultList").on("click", ".h", function() {
+    console.log("test");
+    index = $(this).attr("data-index");
+    $(".modal-title").text(resultsList[index].title);
+    $(".modal-body").text(resultsList[index].plot);
+});
+
+$("#addBook").on("click", function() {
+    console.log(index);
+    API.saveBook(resultsList[index]);
+});
+
 // Add event listeners to the submit and delete buttons
 $submitBtn.on("click", handleFormSubmit);
 $bookList.on("click", ".delete", handleDeleteBtnClick);
-
-// converts xml to json
-// function xml2json(srcDOM) {
-// 	let children = [...srcDOM.children];
-
-// 	// base case for recursion.
-// 	if (!children.length) {
-// 		if (srcDOM.hasAttributes()) {
-// 			var attrs = srcDOM.attributes;
-// 			var output = {};
-// 			for (var i = attrs.length - 1; i >= 0; i--) {
-// 				output[attrs[i].name] = attrs[i].value;
-// 			}
-// 			output.value = srcDOM.innerHTML;
-// 			return output;
-// 		} else {
-// 			return srcDOM.innerHTML;
-// 		}
-// 	}
-
-// 	// initializing object to be returned.
-// 	let jsonResult = {};
-// 	for (let child of children) {
-// 		// checking is child has siblings of same name.
-// 		let childIsArray =
-// 			children.filter(eachChild => eachChild.nodeName === child.nodeName)
-// 				.length > 1;
-
-// 		// if child is array, save the values as array, else as strings.
-// 		if (childIsArray) {
-// 			if (jsonResult[child.nodeName] === undefined) {
-// 				jsonResult[child.nodeName] = [xml2json(child)];
-// 			} else {
-// 				jsonResult[child.nodeName].push(xml2json(child));
-// 			}
-// 		} else {
-// 			jsonResult[child.nodeName] = xml2json(child);
-// 		}
-// 	}
-// 	return jsonResult;
-// }
