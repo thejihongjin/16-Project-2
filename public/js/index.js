@@ -10,19 +10,20 @@ var $bookDescription = $("#book-description");
 var $submitBtn = $("#submit");
 var $bookList = $("#book-list");
 
+
 // The API object contains methods for each kind of request we'll make
 var API = {
     saveBook: function (book) {
         // move goodreads api call here
 
-        // return $.ajax({
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     },
-        //     type: "POST",
-        //     url: "api/books",
-        //     data: JSON.stringify(book)
-        // });
+        return $.ajax({
+            headers: {
+                "Content-Type": "application/json"
+            },
+            type: "POST",
+            url: "api/books",
+            data: book
+        });
     },
     getBooks: function () {
         return $.ajax({
@@ -91,6 +92,7 @@ var handleFormSubmit = function (event) {
     }).then(function (response) {
         var jsonRes = xml2json(response);
         console.log(jsonRes);
+        API.saveBook(jsonRes)
     });
 
     $bookTitle.val("");
