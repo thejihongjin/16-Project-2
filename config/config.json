@@ -4,7 +4,7 @@
         "password": "root",
         "database": "bookshelf_db",
         "host": "localhost",
-        "port": 8889,
+        "port": 3307,
         "dialect": "mysql"
     },
     "test": {
