@@ -9,16 +9,34 @@ module.exports = function(app) {
             res.json(dbBooks);
         });
     });
+    // app.get("/api/temp", function(req, res) {});
+    // app.post("/api/temp", function(req, res) {
+    //     axios
+    //         .get(
+    //             "https://www.goodreads.com/search.xml?key=XTxG7pAsNm9tvSADYVoug&q=" +
+    // 				req.body.title
+    //         )
+    //         .then(function(response) {
+    //             var result = convert.xml2json(response.data, {
+    //                 compact: true,
+    //                 spaces: 4
+    //             });
+    //             var bookInfo = JSON.parse(result);
+    //             console.log(
+    //                 bookInfo.GoodreadsResponse.search.results.work[0].best_book
+    //             );
+    //             res.json(bookInfo);
+    //         });
+    // });
 
     // Create a new book
     app.post("/api/books", function(req, res) {
-        console.log(req);
         db.Book.create({
-            title: title,
-            author: author,
-            year: year,
-            cover: cover,
-            avg_rating: rating
+            title: this[0].best_book.title,
+            author: this[0].best_book.author.name,
+            year: this[0].best_book.original_publication_year.value,
+            cover: this[0].best_book.image_url,
+            avg_rating: this[0].average_rating
         }).then(function(dbBook) {
             console.log(dbBook);
             res.json(dbBook);
