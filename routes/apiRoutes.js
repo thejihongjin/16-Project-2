@@ -32,11 +32,12 @@ module.exports = function(app) {
     // Create a new book
     app.post("/api/books", function(req, res) {
         db.Book.create({
-            title: this[0].best_book.title,
-            author: this[0].best_book.author.name,
-            year: this[0].best_book.original_publication_year.value,
-            cover: this[0].best_book.image_url,
-            avg_rating: this[0].average_rating
+            title: req.body.title,
+            author: req.body.author,
+            // plot: req.body.plot,
+            // year: req.body.year,
+            cover: req.body.cover,
+            avg_rating: req.body.avg_rating
         }).then(function(dbBook) {
             console.log(dbBook);
             res.json(dbBook);
