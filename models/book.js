@@ -14,12 +14,12 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING(100),
             allowNull: false
         },
-        year: {
+        date: {
             type: DataTypes.STRING(50),
             allowNull: false
         },
         genre: {
-            type: DataTypes.STRING(30),
+            type: DataTypes.STRING(255),
             allowNull: true
         },
         plot: {
