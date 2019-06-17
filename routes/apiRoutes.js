@@ -9,28 +9,9 @@ module.exports = function(app) {
             res.json(dbBooks);
         });
     });
-    // app.get("/api/temp", function(req, res) {});
-    // app.post("/api/temp", function(req, res) {
-    //     axios
-    //         .get(
-    //             "https://www.goodreads.com/search.xml?key=XTxG7pAsNm9tvSADYVoug&q=" +
-    // 				req.body.title
-    //         )
-    //         .then(function(response) {
-    //             var result = convert.xml2json(response.data, {
-    //                 compact: true,
-    //                 spaces: 4
-    //             });
-    //             var bookInfo = JSON.parse(result);
-    //             console.log(
-    //                 bookInfo.GoodreadsResponse.search.results.work[0].best_book
-    //             );
-    //             res.json(bookInfo);
-    //         });
-    // });
 
     // Create a new book
-    app.post("/api/books", function (req, res) {
+    app.post("/api/books", function(req, res) {
         db.Book.create({
             title: req.body.title,
             author: req.body.author,
@@ -38,7 +19,7 @@ module.exports = function(app) {
             date: req.body.date,
             cover: req.body.cover,
             genre: req.body.genre,
-            avg_rating: req.body.avg_rating,
+            avg_rating: req.body.avg_rating
         }).then(function(dbBook) {
             console.log(dbBook);
             res.json(dbBook);
