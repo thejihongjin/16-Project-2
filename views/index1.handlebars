@@ -1,0 +1,73 @@
+<div id="home">
+    <div class="container">
+        <div class="row">
+            <div class="col-8 offset-2">
+                <h1>{{msg}}</h1>
+                <h2>This is our Home Page!</h2>
+                <form class="clearfix mb-4">
+                    <div class="form-group">
+                        <label for="book-title">Book Title</label>
+                        <input type="text" id="book-title" class="form-control" aria-describedby="book-title"
+                            placeholder="Enter Book Title" name="title">
+                    </div>
+                    {{!-- <div class="form-group">
+            <label for="book-description">Book Description</label>
+            <textarea class="form-control" id="book-description" aria-describedby="book-description" placeholder="Enter Book Description"></textarea>
+          </div> --}}
+                    <button id="submit" class="btn btn-primary float-right">Submit</button>
+                </form>
+                <h3>Books:</h3>
+                <ul id="book-list" class="list-group">
+                    {{#each books}}
+                    <li data-id="{{this.id}}" class="list-group-item">
+                        <a href="book/{{this.id}}">{{this.title}}</a>
+                        <button class="btn btn-danger float-right delete">ｘ</button>
+                    </li>
+                    {{/each}}
+                </ul>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="loader">Loading...</div>
+                            <ul id="searchResultList">
+
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-genre">
+                            </div>
+                            <div class="modal-author">
+                            </div>
+                            <div class="modal-date">
+                            </div>
+                            <div class="modal-body">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" id="addBook">Add to Bookshelf</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="/js/index.js"></script>
