@@ -30,14 +30,15 @@ module.exports = function(app) {
     // });
 
     // Create a new book
-    app.post("/api/books", function(req, res) {
+    app.post("/api/books", function (req, res) {
         db.Book.create({
             title: req.body.title,
             author: req.body.author,
-            // plot: req.body.plot,
-            // year: req.body.year,
+            plot: req.body.plot,
+            date: req.body.date,
             cover: req.body.cover,
-            avg_rating: req.body.avg_rating
+            genre: req.body.genre,
+            avg_rating: req.body.avg_rating,
         }).then(function(dbBook) {
             console.log(dbBook);
             res.json(dbBook);
