@@ -16,17 +16,9 @@
     <div class="container-fluid" id="conOne">
         <div class="row justify-content-center" id="spacing">
             <div class="col-6 text-center">
-                <h1 id="accentColor">TITLE OF WEBSITE</h1>
+                <h1 id="accentColor">MY VIRTUAL BOOKSHELF</h1>
                 <br>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Amet consectetur adipiscing elit pellentesque habitant morbi. Cursus in hac
-                    habitasse platea dictumst quisque sagittis purus sit. Eget arcu dictum varius duis. Sed nisi lacus
-                    sed viverra tellus in hac habitasse. Lectus arcu bibendum at varius. Nam aliquam sem et tortor.
-                    Lectus proin nibh nisl condimentum. Ipsum nunc aliquet bibendum enim. Pulvinar etiam non quam lacus
-                    suspendisse faucibus. Ullamcorper a lacus vestibulum sed. Tristique magna sit amet purus. Libero
-                    enim sed faucibus turpis in eu mi. Libero enim sed faucibus turpis in eu. Non diam phasellus
-                    vestibulum lorem sed. Tortor pretium viverra suspendisse potenti nullam ac. Venenatis urna cursus
-                    eget nunc scelerisque. Ornare massa eget egestas purus viverra accumsan in nisl.</p>
+                <p id="introText">The best way to keep track of all your past, present, and upcoming reads!</p>
             </div>
         </div>
     </div>
@@ -35,19 +27,19 @@
         <div class="row text-center" id="spacing">
             <div class="col-3">
                 <i class="fas fa-book" id="faConfig"></i>
-                <p class="pt-3">SEARCH BOOKS</p>
+                <p class="pt-3" id="accentColor">SEARCH BOOKS</p>
             </div>
             <div class="col-3">
                 <i class="fas fa-book-open" id="faConfig"></i>
-                <p class="pt-3">KEEP TRACK OF ALL YOUR READS</p>
+                <p class="pt-3" id="accentColor">KEEP TRACK OF ALL YOUR READS</p>
             </div>
             <div class="col-3">
                 <i class="fas fa-list-ul" id="faConfig"></i>
-                <p class="pt-3">ADD YOUR NEXT READS TO YOUR QUEUE</p>
+                <p class="pt-3" id="accentColor">ADD YOUR NEXT READS TO YOUR QUEUE</p>
             </div>
             <div class="col-3">
                 <i class="fas fa-users" id="faConfig"></i>
-                <p class="pt-3">SEARCH AUTHORS</p>
+                <p class="pt-3" id="accentColor">SEARCH AUTHORS</p>
             </div>
         </div>
     </div>
@@ -55,6 +47,7 @@
     <div class="container-fluid text-center" id="conThree">
         <div class="row" id="spacing">
             <div class="col">
+                <hr>
                 <h1 id="accentColor">MY BOOKSHELF</h1>
             </div>
         </div>
@@ -63,7 +56,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
-                            <ul class="books list-group" id="book-list">
+                            <ul class="books list-group " id="book-list">
                                 {{!-- {{#each books}}
                                 <li data-id="{{this.id}}" class="list-group-item">
                                     <button class="btn btn-danger animated flipInY">
@@ -82,16 +75,16 @@
                 <div class="container h-100">
                     <div class="d-flex justify-content-center h-100">
                         <div class="searchbar">
-                            <input id="book-title" class="search_input" type="text" name="title"
+                            <input id="book-title" class="search_input" autocomplete="off" type="text" name="title"
                                 placeholder="Search...">
                             <button id="submit" class="search_icon"><i class="fas fa-search"></i></button>
                         </div>
                     </div>
+                    <h1 id="accentColor">SEARCH FOR BOOKS HERE</h1>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="container-fluid">
         <div class="row" id="spacing">
             <div class="container" id="conFour">
@@ -104,7 +97,6 @@
             </div>
         </div>
     </div>
-
     <footer class="page-footer font-small blue pt-4 bg-dark">
         <div class="container-fluid text-center text-md-left">
             <div class="row">
@@ -155,7 +147,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-danger deleteBook" data-dismiss="modal">Delete Book</button>
+                        <button type="button" class="btn btn-danger deleteBook" data-dismiss="modal">Delete</button>
                         <button type="button" class="btn btn-primary addBook" data-dismiss="modal" id="addBook">Add to
                             Bookshelf</button>
                     </div>

@@ -17,6 +17,8 @@ body {
 	background-color: #313131;
 	color: white;
 	padding: 200px;
+	border: solid black 1px;
+	border-radius: 10px;
 }
 #faConfig {
 	font-size: 90px;
@@ -37,7 +39,7 @@ body {
 	padding: 10px;
 }
 .search_input {
-	color: white;
+	color: #efd469;
 	border: 0;
 	outline: 0;
 	background: none;
@@ -49,12 +51,12 @@ body {
 .searchbar:hover > .search_input {
 	padding: 0 10px;
 	width: 450px;
-	caret-color: red;
+	caret-color: #efd469;
 	transition: width 0.4s linear;
 }
 .searchbar:hover > .search_icon {
-	background: white;
-	color: #e74c3c;
+	background: #efd469;
+	color: #212121;
 }
 .search_icon {
 	height: 40px;
@@ -64,29 +66,30 @@ body {
 	justify-content: center;
 	align-items: center;
 	border-radius: 50%;
-	color: white;
+	color: #212121;
 }
-
+.list-group {
+	display: inline !important;
+}
 .list-group-item {
 	line-height: 2.5;
 }
-
 ul li {
 	z-index: 0;
+	text-align: center;
 	display: inline;
 }
-
 .loader,
 .loader:before,
 .loader:after {
-	background: black;
+	background: #efd469;
 	-webkit-animation: load1 1s infinite ease-in-out;
 	animation: load1 1s infinite ease-in-out;
 	width: 1em;
 	height: 4em;
 }
 .loader {
-	color: black;
+	color: #efd469;
 	text-indent: -9999em;
 	margin: 88px auto;
 	position: relative;
@@ -111,7 +114,6 @@ ul li {
 .loader:after {
 	left: 1.5em;
 }
-
 .bookCover {
 	max-width: 250px;
 	height: auto;
@@ -119,11 +121,14 @@ ul li {
 .h {
 	padding: 0;
 	border: none;
-  background: none;
-  margin: 5px 10px 5px 10px;
+	background: none;
+	margin: 5px 10px 5px 10px;
 }
-.read {
-  opacity: 0 !important;
+.h1 {
+	padding: 0;
+	border: none;
+	background: none;
+	margin: 5px 10px 5px 10px;
 }
 @-webkit-keyframes load1 {
 	0%,
@@ -148,4 +153,15 @@ ul li {
 		box-shadow: 0 -2em;
 		height: 5em;
 	}
+}
+#introText {
+	font-size: 50px;
+}
+hr {
+	color: #efd469;
+	background-color: #efd469;
+}
+
+.read {
+    opacity: 20% !important;
 }
