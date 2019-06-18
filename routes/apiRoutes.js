@@ -1,6 +1,7 @@
 var db = require("../models");
 
-module.exports = function(app) {
+module.exports = function (app) {
+
     // Get all books
     app.get("/api/books", function(req, res) {
         db.Book.findAll({
@@ -9,6 +10,18 @@ module.exports = function(app) {
             res.json(dbBooks);
         });
     });
+
+    app.get("/api/books/:id"),
+    function(req, res) {
+        console.log(req.params.id);
+        db.Book.findOne({
+            where: {
+                id: req.params.id
+            }
+        }).then(function(dbBooks) {
+            res.json(dbBooks);
+        });
+    };
 
     // Create a new book
     app.post("/api/books", function(req, res) {
