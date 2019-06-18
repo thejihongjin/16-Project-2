@@ -8,6 +8,7 @@ $(document).ready(function() {
 
     var resultsList = [];
     var index;
+    var dataid;
 
     $(".loader").hide();
 
@@ -15,15 +16,35 @@ $(document).ready(function() {
     var API = {
         saveBook: function(book) {
             // move goodreads api call here
-
-            return $.post("/api/books", book);
+            return $.ajax({
+                url: "/api/books",
+                type: "POST",
+                data: book
+            });
         },
-        getBooks: function(book) {
-            return $.get("/api/books", book);
+        getBooks: function() {
+            return $.ajax({
+                url: "/api/books",
+                type: "GET"
+            });
+        },
+        getABook: function(id) {
+            return $.get("/api/books/" + id);
+            // return $.ajax({
+            //     url: "/api/books/" + id,
+            //     type: "GET"
+            // });
+        },
+        updateBook: function(book) {
+            return $.ajax({
+                url: "/api/books",
+                type: "PUT",
+                data: book
+            });
         },
         deleteBook: function(id) {
             return $.ajax({
-                url: "api/books/" + id,
+                url: "/api/books/" + id,
                 type: "DELETE"
             });
         }
@@ -33,6 +54,7 @@ $(document).ready(function() {
     var refreshBooks = function() {
         API.getBooks().then(function(data) {
             console.log(data);
+            $(".books").empty();
             for (var i = 0; i < data.length; i++) {
                 var bookCover = function() {
                     if (data[i].cover === undefined) {
@@ -43,16 +65,46 @@ $(document).ready(function() {
                 };
                 var img = "<img class='bookCover' src='" + bookCover() + "'>";
                 var button =
-					"<li><a return false'><button data-toggle='modal' type='button' data-target='#exampleModalCenter' class='h animated fadeIn' data-index=" +
-					i +
+					"<li class='bookShelfList'><a return false'><button data-toggle='modal' type='button' data-target='#exampleModalCenter' class='h1 animated fadeIn' data-id=" +
+					data[i].id +
 					">" +
 					img +
 					"</button></a></li>";
-                $(".books").append(button);
+                $(".books")
+                    .append(button)
+                    .children(":last")
+                    .hide()
+                    .delay(i * 100)
+                    .fadeIn(100);
+                console.log(data[i].read);
+
+                if (data[i].read === true) {
+                    $(".h1[data-id=" + dataid + "]").addClass("read");
+                }
             }
         });
     };
     refreshBooks();
+
+    var appendBook = function() {
+        API.getBooks().then(function(result) {
+            var j = result.length;
+            var img =
+				"<img class='bookCover' src='" + result[j - 1].cover + "'>";
+            var button =
+				"<li class='bookShelfList'><a return false'><button data-toggle='modal' type='button' data-target='#exampleModalCenter' class='h1 animated fadeIn' data-id=" +
+				result[j - 1].id +
+				">" +
+				img +
+				"</button></a></li>";
+            $(".books")
+                .append(button)
+                .children(":last")
+                .hide()
+                .delay(j * 100)
+                .fadeIn(100);
+        });
+    };
     // handleFormSubmit is called whenever we submit a new book
     // Save the new book to the db and refresh the list
     var handleFormSubmit = function(event) {
@@ -125,16 +177,19 @@ $(document).ready(function() {
         for (var i = 0; i < data.length; i++) {
             var dataInfo = data[i].volumeInfo;
             var info = {
-                id: i,
                 title: dataInfo.title,
-                author: [dataInfo.authors].join(", "),
-                date: dataInfo.publishedDate,
-                plot: dataInfo.description,
+                author: [dataInfo.authors].join(","),
+                date: dataInfo.publishedDate
+                    ? dataInfo.publishedDate
+                    : "Not available",
+                plot: dataInfo.description
+                    ? dataInfo.description
+                    : "Not available",
                 avg_rating: dataInfo.averageRating,
                 genre: [dataInfo.categories].join(", "),
                 cover: dataInfo.imageLinks
                     ? dataInfo.imageLinks.thumbnail
-                    : undefined
+                    : "https://blog.springshare.com/wp-content/uploads/2010/02/nc-md.gif"
             };
             console.log(info);
             resultsList.push(info);
@@ -164,18 +219,62 @@ $(document).ready(function() {
             console.log(resultsList);
         }
     };
-    $("#searchResultList").on("click", ".h", function() {
+    $(document).on("click", ".h", function() {
+        $(".deleteBook").hide();
         index = $(this).attr("data-index");
         $(".modal-title").text(resultsList[index].title);
         $(".modal-author").text("Author(s): " + resultsList[index].author);
         $(".modal-body").text(resultsList[index].plot);
         $(".modal-genre").text("Genre: " + resultsList[index].genre);
         $(".modal-date").text("Published Date: " + resultsList[index].date);
+        $("#markRead").attr("id", "addBook");
+        $("#addBook").text("Add to Bookshelf");
     });
 
-    $("#addBook").on("click", function() {
-        console.log(index);
-        API.saveBook(resultsList[index]).then(function() {
+    $(document).on("click", ".h1", function() {
+        dataid = $(this).attr("data-id");
+        console.log(dataid);
+
+        API.getABook(dataid).then(function(result) {
+            console.log(result);
+            $(".modal-title").text(result.title);
+            $(".modal-author").text("Author(s): " + result.author);
+            $(".modal-body").text(result.plot);
+            $(".modal-genre").text("Genre: " + result.genre);
+            $(".modal-date").text("Published Date: " + result.date);
+        });
+        $(".deleteBook").show();
+        $("#addBook").attr("id", "markRead");
+        $("#markRead").text("Mark as read");
+    });
+
+    $(".addBook").on("click", function() {
+        var id = $(this).attr("id");
+
+        if (id === "addBook") {
+            API.saveBook(resultsList[index]).then(function() {
+                appendBook();
+            });
+        } else if (id === "markRead") {
+            console.log("Marking as read");
+            API.getBooks().then(function(result) {
+                console.log(result[dataid - 1]);
+                var updatedBook = {
+                    id: dataid,
+                    read: 1
+                };
+                API.updateBook(updatedBook).then(function() {
+                    $(".h1[data-id=" + dataid + "]").addClass("read");
+                });
+            });
+        }
+    });
+
+    $(".deleteBook").on("click", function() {
+        API.deleteBook(dataid).then(function() {
+            $("li.bookShelfList > a > .h1[data-id=" + dataid + "]")
+                .fadeOut()
+                .remove();
             refreshBooks();
         });
     });

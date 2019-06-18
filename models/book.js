@@ -7,7 +7,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false
         },
         title: {
-            type: DataTypes.STRING(100),
+            type: DataTypes.STRING(255),
             allowNull: false
         },
         author: {
@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
         },
         date: {
             type: DataTypes.STRING(50),
-            allowNull: false
+            allowNull: true
         },
         genre: {
             type: DataTypes.STRING(255),
@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
         },
         plot: {
             type: DataTypes.TEXT,
-            allowNull: false
+            allowNull: true
         },
         cover: {
             type: DataTypes.TEXT,

@@ -10,6 +10,16 @@ module.exports = function(app) {
         });
     });
 
+    app.get("/api/books/:id", function(req, res) {
+        db.Book.findOne({
+            where: {
+                id: req.params.id
+            }
+        }).then(function(dbBook) {
+            res.json(dbBook);
+        });
+    });
+
     // Create a new book
     app.post("/api/books", function(req, res) {
         db.Book.create({

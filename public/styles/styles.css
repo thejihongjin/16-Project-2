@@ -122,6 +122,9 @@ ul li {
   background: none;
   margin: 5px 10px 5px 10px;
 }
+.read {
+  opacity: 0 !important;
+}
 @-webkit-keyframes load1 {
 	0%,
 	80%,
