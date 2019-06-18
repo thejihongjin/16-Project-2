@@ -1,7 +1,6 @@
 var db = require("../models");
 
-module.exports = function (app) {
-
+module.exports = function(app) {
     // Get all books
     app.get("/api/books", function(req, res) {
         db.Book.findAll({
@@ -11,17 +10,15 @@ module.exports = function (app) {
         });
     });
 
-    app.get("/api/books/:id"),
-    function(req, res) {
-        console.log(req.params.id);
+    app.get("/api/books/:id", function(req, res) {
         db.Book.findOne({
             where: {
                 id: req.params.id
             }
-        }).then(function(dbBooks) {
-            res.json(dbBooks);
+        }).then(function(dbBook) {
+            res.json(dbBook);
         });
-    };
+    });
 
     // Create a new book
     app.post("/api/books", function(req, res) {

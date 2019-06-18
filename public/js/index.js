@@ -29,10 +29,11 @@ $(document).ready(function() {
             });
         },
         getABook: function(id) {
-            return $.ajax({
-                url: "/api/books/" + id,
-                type: "GET"
-            });
+            return $.get("/api/books/" + id);
+            // return $.ajax({
+            //     url: "/api/books/" + id,
+            //     type: "GET"
+            // });
         },
         updateBook: function(book) {
             return $.ajax({
@@ -236,11 +237,11 @@ $(document).ready(function() {
 
         API.getABook(dataid).then(function(result) {
             console.log(result);
-            $(".modal-title").text(result[0].title);
-            $(".modal-author").text("Author(s): " + result[0].author);
-            $(".modal-body").text(result[0].plot);
-            $(".modal-genre").text("Genre: " + result[0].genre);
-            $(".modal-date").text("Published Date: " + result[0].date);
+            $(".modal-title").text(result.title);
+            $(".modal-author").text("Author(s): " + result.author);
+            $(".modal-body").text(result.plot);
+            $(".modal-genre").text("Genre: " + result.genre);
+            $(".modal-date").text("Published Date: " + result.date);
         });
         $(".deleteBook").show();
         $("#addBook").attr("id", "markRead");
